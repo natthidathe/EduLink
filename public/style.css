@@ -1,0 +1,189 @@
+/* src/styles.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+*{
+    font-family: "Poppins";
+}
+
+body {
+    background-color: #F1EEDC;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.title{
+    font-weight: 800;
+    font-size: 40px;
+    line-height: 60px;
+    color: #B4E1F0;
+    text-shadow: 
+        -1px -1px 0 #000,  /* Top-left */
+        1px -1px 0 #000,   /* Top-right */
+        -1px 1px 0 #000,   /* Bottom-left */
+        1px 1px 0 #000;    /* Bottom-right */
+
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem; /* Adjust padding as needed */
+    background-color: #D0EBC5; /* Background color for the navbar */
+    height: 70px; /* Adjust height as needed */
+}
+
+/* Left section for the EduLink title */
+.nav-left .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Right section for the buttons */
+.nav-right {
+    display: flex;
+    gap: 10px; /* Space between buttons */
+}
+
+.login{
+    width: 123px;
+    height: 35px;
+    background: rgba(255, 255, 255, 0.65);
+    border: 1px solid #000000;
+    border-radius: 10px;
+}
+
+.register{
+    box-sizing: border-box;
+    width: 123px;
+    height: 35px;
+    background: rgba(255, 135, 135, 0.65);
+    border: 1px solid #000000;
+    border-radius: 10px;
+}
+
+.registerhere{
+    width: 226px;
+    height: 35px;
+    background: rgba(255, 135, 135, 0.51);
+    border: 1px solid #000000;
+    border-radius: 10px;
+
+}
+
+.edulink2{
+    font-weight: 800;
+    font-size: 64px;
+    color: #B3C8CF;
+    text-shadow: 
+        -1px -1px 0 #000,  /* Top-left */
+        1px -1px 0 #000,   /* Top-right */
+        -1px 1px 0 #000,   /* Bottom-left */
+        1px 1px 0 #000;    /* Bottom-right */
+
+}
+
+.lms{
+    font-weight: 800;
+    font-size: 40px;
+
+    color: #000000;
+    padding-top: 10;
+}
+
+.this{
+    font-weight: 500;
+    font-size: 24px;
+    color: #000000;
+    padding-top: 10;
+}
+
+.land{
+    display: block;
+    justify-content: center;
+    padding: 10;
+    width: 50%;
+    padding-left: 80;
+
+}
+
+.firstpage{
+    display: flex;
+    width: 100%;
+    /* max-width: 700px; */
+    /* padding-top: 100; */
+    padding: 0;
+    align-content: center;
+    margin: auto;
+    margin-left: 50;
+    margin-right: 50;
+    height: auto;
+}
+
+.img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20%; /* Set the width of the container */
+    max-width: 100%;
+}
+
+.image1 {
+    width: 80vw; /* Let the image take the full width of the container */
+    height: auto; /* Keep the aspect ratio */
+    min-width: 60%;
+}
+
+
+/* Mobile view */
+@media (max-width: 768px) {
+    .firstpage {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: center;
+        padding: 1rem;
+    }
+
+    .img {
+        width: 100%; /* Adjust width to fit smaller screens */
+        max-width: 400px;
+        margin-top: 1rem;
+        align-content: center;
+    }
+
+    .edulink2, .lms, .this {
+        font-size: ึvw; /* Scale fonts */
+    }
+}
+/* Adjust button width for smaller screens */
+@media (max-width: 768px) {
+    .login, .register, .registerhere {
+        width: 100%;
+        max-width: 150px;
+        font-size: 0.9em; /* Scale down font size if necessary */
+    }
+}
+.img img {
+    width: 100%; /* Scale image with container */
+    max-width: 400px; /* Limit size on larger screens */
+    height: auto;
+    border-radius: 10px; /* Keep rounded corners */
+    align-items: center;
+    margin: 0 auto;
+}
+@media (max-width: 768px) {
+    .land {
+        text-align: center;
+    }
+}
