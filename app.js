@@ -48,11 +48,22 @@ app.get("/login", (req, res) => {
     res.render("login");
 });
 
+app.get("/dashboard", (req, res) => {
+    res.render("dashboard");
+});
+
+app.get("/enroll", (req, res) => {
+    res.render("enroll");
+});
+
+app.get("/course", (req, res) => {
+    res.render("course");
+});
+
 //Define Routes
 app.use('/', require('./routes/pages'));
-app.use('/auth', require('./routes/auth'));
+// app.use('/auth', require('./routes/auth'));
 
 app.listen(3000, () => {
     console.log("Server started on Port 3000");
 })
-

@@ -14,4 +14,20 @@ router.get('/login', (req, res) => {
     res.render('login');
 });
 
+router.get('/home', (req, res) => {
+    res.render('home');
+});
+
+router.get('/dashboard', (req, res) => {
+    res.render('dashboard');
+});
+
+router.get('/enroll', (req, res) => {
+    res.render('enroll');
+});
+
+router.get('/course', (req, res) => {
+    res.render('course');
+});
+
 module.exports = router;
