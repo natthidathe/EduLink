@@ -2,6 +2,7 @@ const express = require("express");
 const path = require('path');
 const mysql = require("mysql");
 const dotenv = require('dotenv');
+const flash = require('connect-flash');
 
 
 dotenv.config({path: './.env'});
@@ -14,7 +15,7 @@ const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'root',
-    database: process.env.database
+    database: 'edulink'
 });
 
 
@@ -48,8 +49,16 @@ app.get("/login", (req, res) => {
     res.render("login");
 });
 
-app.get("/dashboard", (req, res) => {
-    res.render("dashboard");
+app.get("/admin_dashboard", (req, res) => {
+    res.render("admin_dashboard");
+});
+
+app.get("/instructor_dashboard", (req, res) => {
+    res.render("instructor_dashboard");
+});
+
+app.get("/student_dashboard", (req, res) => {
+    res.render("student_dashboard");
 });
 
 app.get("/enroll", (req, res) => {
@@ -60,6 +69,18 @@ app.get("/course", (req, res) => {
     res.render("course");
 });
 
+app.get("/instructor_course", (req, res) => {
+    res.render("instructor_course");
+});
+
+app.get("/assignment", (req, res) => {
+    res.render("assignment");
+});
+
+app.get("/gradebook", (req, res) => {
+    res.render("gradebook");
+});
+
 //Define Routes
 app.use('/', require('./routes/pages'));
 // app.use('/auth', require('./routes/auth'));
@@ -67,3 +88,6 @@ app.use('/', require('./routes/pages'));
 app.listen(3000, () => {
     console.log("Server started on Port 3000");
 })
+
+
+app.use(flash());

@@ -30,26 +30,58 @@
         </a>
     </div>
     </nav>
-    <div class="flex flex-col justify-center h-5/6">
-        <div class="text-2xl justify-center self-center mb-4">Welcome, [User's Name]! You’re logged in as a [Role].</div>
-        {{!-- {{#if message}}
-            <p>{{message}}</p>
-        {{/if}} --}}
-        
-        <div class="flex justify-evenly h-5/6 ">
-            <a href="/dashboard" class="flex flex-col justify-center items-center h-820 ">
-                <img  src="/dashboard.png" alt="">
-                <h3 class="font-bold text-lg">DASHBOARD</h3>
-            </a>
-            <a href="/enroll" class="flex flex-col justify-center items-center">
-                <img src="/register.png" alt="">
-                <h3 class="font-bold text-lg">COURSE REGISTRATION</h3>
-            </a>
-            <a href="/course" class="flex flex-col justify-center items-center ">
-                <img src="/course.png" alt="">
-                <h3 class="font-bold text-lg">COURSES</h3>
-            </a>
+
+    <div class="flex flex-col">
+      <div class="text-xl font-bold mt-24 mb-4 mx-4">REGISTRATION</div>
+      <div class="mx-4">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Instructor</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#if data.length}}
+              {{#each data}}
+                <tr>
+                  <th scope="row">{{@index}}</th>
+                  <td>{{name}}</td>
+                  <td>{{email}}</td>
+                  <td>
+                    <a class="btn btn-success edit" href="../users/edit/{{id}}">Edit</a>
+                  </td>
+                </tr>
+              {{/each}}
+            {{else}}
+              <tr>
+                <td colspan="4">No user</td>
+              </tr>
+            {{/if}}
+          </tbody>
+        </table>
+      </div>
+      <div class="flex flex-col mx-4 bg-white">
+        <div class="form-group w-1/6 ml-2">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control rounded-xl" id="name" name="name">
         </div>
+        
+        <div class="form-group w-1/6 mt-2 ml-2">
+                        <label for="studentid" class="form-label">StudentID</label>
+                        <input type="text" class="form-control rounded-xl" id="studentid" name="studentid">
+        </div>
+
+        <div class="form-group w-1/6 mt-2 ml-2">
+                        <label for="courseid" class="form-label">CourseID</label>
+                        <input type="text" class="form-control rounded-xl" id="courseid" name="courseid">
+        </div>
+
+
+        <button class="ml-2 mb-4 mt-4 border-2 bg-[#B4E1F0]/50 border-black w-40">ENROLL</button>
+      </div>
     </div>
 </body>
+
 </html>

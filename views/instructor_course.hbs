@@ -30,12 +30,15 @@
         </a>
     </div>
     </nav>
-    <div class="flex flex-col  h-5/6">
-        <div class="text-2xl mb-4 ml-7 mt-3">
-        <div class="text-2xl font-bold">Course 1</div>
-        <div class="text-xl font-bold">Course description</div>
-        <div class="text-[#757575] text-base ">50 members</div>
-        </div>
+    <div class="flex flex-row">
+        <div class="flex flex-col w-1/2">
+            <div class="flex flex-col  h-5/6">
+                <div class="text-2xl mb-4 ml-7 mt-3">
+                <div class="text-2xl font-bold">Course 1</div>
+                <div class="text-xl font-bold">Course description</div>
+                <div class="text-[#757575] text-base ">50 members</div>
+            </div>
+            </div>
         
         <div class="flex flex-col h-2/7 mx-4 bg-[#D9D9D9]/50 shadow-md   ">
             <div class="flex mt-1">
@@ -74,6 +77,73 @@
                 <div class="flex  ml-32 my-6 ">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean imperdiet leo ut molestie scelerisque.</div>
         </div>
         <div class="text-sm py-2 px-2 flex flex-col h-1/7 mx-4 bg-[#D9D9D9]/50 shadow-md   ">Add class comment</div>
+        <button class="bg-[#CEF0FF] w-1/4 mx-4 mt-10 rounded-full border-1 border-black">ADD CONTENT</button>
     </div>
+
+    <div class="flex flex-col mt-32 w-1/2 mx-4">
+        <div class="mb-2 bg-[#B4E1F0]/50 ">Assignment</div>
+        <table class="table">
+            <thead>
+                <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">DueDate</th>
+                <th width="200px">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#if data.length}}
+                {{#each data}}
+                    <tr>
+                    <th scope="row">{{@index}}</th>
+                    <td>{{name}}</td>
+                    <td>{{email}}</td>
+                    <td>
+                        <a class="btn btn-success edit" href="../users/edit/{{id}}">Edit</a>
+                    </td>
+                    </tr>
+                {{/each}}
+                {{else}}
+                <tr>
+                    <td colspan="5">No user</td>
+                </tr>
+                {{/if}}
+            </tbody>
+            </table>
+
+        <div class="mb-2 bg-[#B4E1F0]/50" > Quiz</div>
+        <table class="table">
+            <thead>
+                <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Title</th>
+                <th scope="col">TotalPoint</th>
+                <th scope="col">DueDate</th>
+                <th width="200px">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#if data.length}}
+                {{#each data}}
+                    <tr>
+                    <th scope="row">{{@index}}</th>
+                    <td>{{name}}</td>
+                    <td>{{email}}</td>
+                    <td>
+                        <a class="btn btn-success edit" href="../users/edit/{{id}}">Edit</a>
+                    </td>
+                    </tr>
+                {{/each}}
+                {{else}}
+                <tr>
+                    <td colspan="5">No user</td>
+                </tr>
+                {{/if}}
+            </tbody>
+            </table>
+    </div>
+    </div>
+        
 </body>
 </html>
