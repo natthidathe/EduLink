@@ -1,6 +1,8 @@
 const mysql = require("mysql");
 // const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const mysql2 = require('mysql2');
+
  
 const db = mysql.createConnection({
     host: 'localhost',
@@ -45,47 +47,32 @@ exports.register = (req, res) =>{
 } ;
 
 
+// Login user
 exports.login = (req, res) => {
     const { email, password } = req.body;
 
-    // Query the database to find the user by email
-    var sql = 'SELECT * FROM user WHERE email = ?';
-    db.query(sql, [email], function (err, results) {
+    const query = "SELECT * FROM user WHERE Email = ? AND Password = ?";
+    db.query(query, [email, password], (err, results) => {
         if (err) {
-            console.log('Error during query:', err);
-            return res.status(500).render('login', {
-                message: 'An error occurred. Please try again later.'
-            });
+            console.error("Error during login:", err);
+            return res.status(500).send("Internal Server Error");
         }
 
-        // If no user found with the provided email
+        console.log("Query Results:", results);
+
         if (results.length === 0) {
-            return res.render('login', {
-                message: 'Email or password is incorrect'
-            });
+            return res.render("login", { error: "Invalid email or password" });
         }
 
-        const user = results[0];  // Take the first user from the result
+        const user = results[0]; // Access the first row of the result
+        req.session.user = {
+            id: user.UserID, // Match the correct column name
+            name: user.Name, // Match the correct column name
+            role: user.Role  // Match the correct column name
+        };
+        console.log("Logged in User:", user.Name, user.Role);
 
-        // Check if the user has a password field
-        if (!user.password) {
-            return res.render('login', {
-                message: 'Password not found in the database'
-            });
-        }
-
-        // Compare the provided password with the stored password (plaintext comparison)
-        if (password !== user.password) {
-            return res.render('login', {
-                message: 'Email or password is incorrect'
-            });
-        }
-
-        // If the login is successful, store user information in the session
-        req.session.user = { id: user.id, role: user.role, name: user.name };
-
-        // Redirect to the home page after successful login
-        return res.redirect('/home');
+        res.redirect("/home");
     });
 };
 

@@ -1,74 +1,82 @@
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 </style>
-
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="/style.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>EduLink</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>EduLink</title>
 </head>
 <body class="mt-[75px]">
-    <nav class="navbar">
+  <!-- Navigation Bar -->
+  <nav class="navbar">
     <div class="nav-left">
-        <h1 class="title">EduLink</h1>
+      <h1 class="title">EduLink</h1>
     </div>
     <div class="nav-right">
-        <a href="/home">
-            <div class="home">Home</div>
-        </a>
-        <a href="">
-            <div class="profile">Profile</div>
-        </a>
-        <a href="/">
-             <button class="logout">Logout</button>
-        </a>
+      <a href="/home">
+        <div class="home">Home</div>
+      </a>
+      <a href="/profile">
+        <div class="profile">Profile</div>
+      </a>
+      <a href="/">
+        <button class="logout">Logout</button>
+      </a>
     </div>
-    </nav>
-    <div class="flex flex-col justify-center h-5/6">
-                <div class="text-2xl justify-center self-center mb-4">Welcome, {{name}}! You’re logged in as a {{role}}.</div>
+  </nav>
 
-        <div class="flex justify-evenly h-5/6 ">
-            <div class="flex flex-col justify-center items-center h-820 ">
-                <img  src="/dashboard.png" alt="">
-                {{!-- <ul>
-                    {{#if (eq role 'admin')}}
-                    <li>
-                        <a href="/admin_dashboard">                
-                            <h3 class="font-bold text-lg">ADMIN DASHBOARD</h3>
-                        </a>
-                    </li>
-                    {{/if}}
-                    {{#if (eq role 'student')}}
-                    <li>
-                        <a href="/student_dashboard">                
-                            <h3 class="font-bold text-lg">STUDENT DASHBOARD</h3>
-                        </a>
-                    </li>
-                    {{/if}}
-                    {{#if (eq role 'instructor')}}
-                    <li>
-                        <a href="/instructor_dashboard">                
-                            <h3 class="font-bold text-lg">STUDENT DASHBOARD</h3>
-                        </a>
-                    </li>
-                    {{/if}}
-                </ul> --}}
-            </div>
-            <a href="/enroll" class="flex flex-col justify-center items-center">
-                <img src="/register.png" alt="">
-                <h3 class="font-bold text-lg">COURSE REGISTRATION</h3>
-            </a>
-            <a href="/course" class="flex flex-col justify-center items-center ">
-                <img src="/course.png" alt="">
-                <h3 class="font-bold text-lg">COURSES</h3>
-            </a>
-        </div>
+  <!-- Welcome Section -->
+  <div class="flex flex-col justify-center h-5/6">
+    <div class="text-2xl justify-center self-center mb-4">
+      Welcome, {{name}}! You’re logged in as a {{role}}.
     </div>
+
+    <!-- Dashboard Links -->
+    <div class="flex justify-evenly h-5/6">
+      <div class="flex flex-col justify-center items-center h-820">
+        <img src="/dashboard.png" alt="Dashboard Image" class="mb-2">
+        <ul>
+          {{#if (eq role 'admin')}}
+          <li>
+            <a href="/admin-dashboard">
+            <h3 class="font-bold text-lg">ADMIN DASHBOARD</h3>
+            </a>
+          </li>
+          {{/if}}
+          {{#if (eq role 'student')}}
+          <li>
+            <a href="/student-dashboard">
+            <h3 class="font-bold text-lg">STUDENT DASHBOARD</h3>
+            </a>
+          </li>
+          {{/if}}
+
+          {{#if (eq role 'instructor')}}
+          <li>
+            <h3 class="font-bold text-lg self-center">INSTRUCTOR DASHBOARD</h3>
+            <a href="/instructor-dashboard">
+            </a>
+          </li>
+          {{/if}}
+        </ul>
+      </div>
+
+      <!-- Additional Links -->
+      <a href="/enroll" class="flex flex-col justify-center items-center">
+        <img src="/register.png" alt="Register Image" class="mb-2">
+        <h3 class="font-bold text-lg">COURSE REGISTRATION</h3>
+      </a>
+      <a href="/course" class="flex flex-col justify-center items-center">
+        <img src="/course.png" alt="Courses Image" class="mb-2">
+        <h3 class="font-bold text-lg">COURSES</h3>
+      </a>
+    </div>
+  </div>
 </body>
 </html>

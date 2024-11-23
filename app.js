@@ -1,102 +1,105 @@
 const express = require("express");
-const path = require('path');
+const path = require("path");
 const mysql = require("mysql");
-const dotenv = require('dotenv');
-dotenv.config({path: './.env'});
+const dotenv = require("dotenv");
+const bodyParser = require("body-parser");
+const session = require("express-session");
+
+dotenv.config({ path: "./.env" });
 
 const app = express();
 
 
+const hbs = require("hbs");
+
 // Set Handlebars as the view engine
-// app.engine('hbs', hbs.engine);
-app.set('view engine', 'hbs');
+app.set("view engine", "hbs");
+// Register an 'eq' helper
+hbs.registerHelper("eq", (a, b) => a === b);
+// Serve static files
+const publicDirectory = path.join(__dirname, "/public");
+app.use(express.static(publicDirectory));
 
-
-
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'root',
-    database: 'edulink'
-});
-
-const session = require('express-session');
-
-app.use(session({
-    secret: 'your_secret_key',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }, // Set secure: true if using HTTPS
-}));
-
-
-
-const publicDirectory = path.join(__dirname, './public')
-app.use(express.static(publicDirectory))
-
-app.use(express.urlencoded({extended: true}));
+// Middleware
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(
+  session({
+    secret: "your_secret_key",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 
 
-db.connect(function(err){
-    if(err) throw(err);
-    console.log("Mysql connected")
+
+
+
+// Database Connection
+const db = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "root",
+  database: "edulink",
 });
 
-//Define Routes
-app.use('/', require('./routes/pages'));
-app.use('/auth', require('./routes/auth'));
-
-//request n respond res= send something to frontend
-app.get("/", (req, res) => {
-    res.render("index");
+db.connect((err) => {
+  if (err) throw err;
+  console.log("MySQL connected");
 });
 
-app.get("/register", (req, res) => {
-    res.render("register");
-});
+// Define Routes
+app.use("/", require("./routes/pages"));
+app.use("/auth", require("./routes/auth"));
 
-app.get("/login", (req, res) => {
-    res.render("login");
-});
-
-app.get("/admin_dashboard", (req, res) => {
-    res.render("admin_dashboard");
-});
-
-app.get("/instructor_dashboard", (req, res) => {
-    res.render("instructor_dashboard");
-});
-
-app.get("/student_dashboard", (req, res) => {
-    res.render("student_dashboard");
-});
-
-app.get("/enroll", (req, res) => {
-    res.render("enroll");
-});
-
-app.get("/course", (req, res) => {
-    res.render("course");
-});
-
-app.get("/instructor_course", (req, res) => {
-    res.render("instructor_course");
-});
-
-app.get("/assignment", (req, res) => {
-    res.render("assignment");
-});
-
-app.get("/gradebook", (req, res) => {
-    res.render("gradebook");
+// Existing GET routes
+app.get("/", (req, res) => res.render("index"));
+app.get("/register", (req, res) => res.render("register"));
+app.get("/login", (req, res) => res.render("login"));
+app.get("/home", (req, res) => {
+    const user = req.session.user; // Assuming user info is stored in the session
+    res.render("home", {
+        name: user.name,
+        role: user.role
+    });
 });
 
 
+// Role-specific dashboard routes
+app.get("/admin-dashboard", (req, res) => {
+  if (req.session.user && req.session.user.role === "admin") {
+    res.send("Welcome to Admin Dashboard");
+  } else {
+    res.status(403).send("Access Denied");
+  }
+});
 
-app.listen(3000, () => {
-    console.log("Server started on Port 3000");
-})
+app.get("/student-dashboard", (req, res) => {
+  if (req.session.user && req.session.user.role === "student") {
+    res.send("Welcome to Student Dashboard");
+  } else {
+    res.status(403).send("Access Denied");
+  }
+});
 
+app.get("/instructor-dashboard", (req, res) => {
+  if (req.session.user && req.session.user.role === "instructor") {
+    res.send("Welcome to Instructor Dashboard");
+  } else {
+    res.status(403).send("Access Denied");
+  }
+});
 
+// Additional pages
+app.get("/enroll", (req, res) => res.render("enroll"));
+app.get("/course", (req, res) => res.render("course"));
+app.get("/instructor_course", (req, res) => res.render("instructor_course"));
+app.get("/assignment", (req, res) => res.render("assignment"));
+app.get("/gradebook", (req, res) => res.render("gradebook"));
+
+// Server
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`Server started on http://localhost:${PORT}`);
+});
