@@ -13,6 +13,19 @@
     <title>EduLink</title>
 </head>
 <body class="h-screen flex justify-center items-center">
+    <nav class="navbar">
+    <div class="nav-left">
+        <h1 class="title">EduLink</h1>
+    </div>
+    <div class="nav-right">
+        <a href="/login">
+            <button class="login">Login</button>
+        </a>
+        <a href="/register">
+            <button class="register">Register</button>
+        </a>
+    </div>
+</nav>
         <div class ="flex-col flex justify-center w-1/3">
             <div class="justify-center flex text-[30px] font-extrabold">
                 Login 
@@ -31,15 +44,19 @@
             
                     <div class="flex justify-end">Forgot Password?</div>
                     
-                    <a href="/home">
-                        <button type="button" class="bg-[#CEF0FF] w-full px-4 mt-3 h-7 rounded-xl">LOGIN</button>
-                    </a>
+                    
+                    <button type="submit" class="bg-[#CEF0FF] w-full px-4 mt-3 h-7 rounded-xl">LOGIN</button>
+                    
                     
                     <div class="flex justify-center">Do not have an account? &nbsp;
                         <a class="text-sky-600" href="/register">Signup</a>
                     </div>
                 </div>
             </form>
+            {{#if message}}
+                <h4 class="" alert alert-danger mt-4>{{message}}</h4>
+
+            {{/if}}
         </div>
 </body>
 </html>

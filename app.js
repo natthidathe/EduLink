@@ -2,13 +2,15 @@ const express = require("express");
 const path = require('path');
 const mysql = require("mysql");
 const dotenv = require('dotenv');
-const flash = require('connect-flash');
-
-
 dotenv.config({path: './.env'});
 
-
 const app = express();
+
+
+// Set Handlebars as the view engine
+// app.engine('hbs', hbs.engine);
+app.set('view engine', 'hbs');
+
 
 
 const db = mysql.createConnection({
@@ -18,6 +20,16 @@ const db = mysql.createConnection({
     database: 'edulink'
 });
 
+const session = require('express-session');
+
+app.use(session({
+    secret: 'your_secret_key',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }, // Set secure: true if using HTTPS
+}));
+
+
 
 const publicDirectory = path.join(__dirname, './public')
 app.use(express.static(publicDirectory))
@@ -25,16 +37,16 @@ app.use(express.static(publicDirectory))
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
-app.set('view engine', 'hbs');
 
-db.connect((error) =>{
-    if(error){
-        console.log(error)
-    } else {
-        console.log("MYSQL Connected")
-    }
-})
 
+db.connect(function(err){
+    if(err) throw(err);
+    console.log("Mysql connected")
+});
+
+//Define Routes
+app.use('/', require('./routes/pages'));
+app.use('/auth', require('./routes/auth'));
 
 //request n respond res= send something to frontend
 app.get("/", (req, res) => {
@@ -81,13 +93,10 @@ app.get("/gradebook", (req, res) => {
     res.render("gradebook");
 });
 
-//Define Routes
-app.use('/', require('./routes/pages'));
-// app.use('/auth', require('./routes/auth'));
+
 
 app.listen(3000, () => {
     console.log("Server started on Port 3000");
 })
 
 
-app.use(flash());

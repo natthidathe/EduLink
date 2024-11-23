@@ -31,16 +31,35 @@
     </div>
     </nav>
     <div class="flex flex-col justify-center h-5/6">
-        <div class="text-2xl justify-center self-center mb-4">Welcome, [User's Name]! You’re logged in as a [Role].</div>
-        {{!-- {{#if message}}
-            <p>{{message}}</p>
-        {{/if}} --}}
-        
+                <div class="text-2xl justify-center self-center mb-4">Welcome, {{name}}! You’re logged in as a {{role}}.</div>
+
         <div class="flex justify-evenly h-5/6 ">
-            <a href="/dashboard" class="flex flex-col justify-center items-center h-820 ">
+            <div class="flex flex-col justify-center items-center h-820 ">
                 <img  src="/dashboard.png" alt="">
-                <h3 class="font-bold text-lg">DASHBOARD</h3>
-            </a>
+                {{!-- <ul>
+                    {{#if (eq role 'admin')}}
+                    <li>
+                        <a href="/admin_dashboard">                
+                            <h3 class="font-bold text-lg">ADMIN DASHBOARD</h3>
+                        </a>
+                    </li>
+                    {{/if}}
+                    {{#if (eq role 'student')}}
+                    <li>
+                        <a href="/student_dashboard">                
+                            <h3 class="font-bold text-lg">STUDENT DASHBOARD</h3>
+                        </a>
+                    </li>
+                    {{/if}}
+                    {{#if (eq role 'instructor')}}
+                    <li>
+                        <a href="/instructor_dashboard">                
+                            <h3 class="font-bold text-lg">STUDENT DASHBOARD</h3>
+                        </a>
+                    </li>
+                    {{/if}}
+                </ul> --}}
+            </div>
             <a href="/enroll" class="flex flex-col justify-center items-center">
                 <img src="/register.png" alt="">
                 <h3 class="font-bold text-lg">COURSE REGISTRATION</h3>

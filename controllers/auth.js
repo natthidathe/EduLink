@@ -1,12 +1,12 @@
 const mysql = require("mysql");
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
  
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'root',
-    database: process.env.database
+    database: 'edulink'
 });
 
 exports.register = (req, res) =>{
@@ -14,7 +14,7 @@ exports.register = (req, res) =>{
 
     const {name,email,password,passwordConfirm,role} = req.body;
 
-    db.query('SELECT email FROM user where email = ?', [email], async(error, results) => {
+    db.query('SELECT email FROM user where email = ', [email], async(error, results) => {
         if(error){
             console.log(error);
         }
@@ -42,5 +42,52 @@ exports.register = (req, res) =>{
 
 
     });
-} 
+} ;
+
+
+exports.login = (req, res) => {
+    const { email, password } = req.body;
+
+    // Query the database to find the user by email
+    var sql = 'SELECT * FROM user WHERE email = ?';
+    db.query(sql, [email], function (err, results) {
+        if (err) {
+            console.log('Error during query:', err);
+            return res.status(500).render('login', {
+                message: 'An error occurred. Please try again later.'
+            });
+        }
+
+        // If no user found with the provided email
+        if (results.length === 0) {
+            return res.render('login', {
+                message: 'Email or password is incorrect'
+            });
+        }
+
+        const user = results[0];  // Take the first user from the result
+
+        // Check if the user has a password field
+        if (!user.password) {
+            return res.render('login', {
+                message: 'Password not found in the database'
+            });
+        }
+
+        // Compare the provided password with the stored password (plaintext comparison)
+        if (password !== user.password) {
+            return res.render('login', {
+                message: 'Email or password is incorrect'
+            });
+        }
+
+        // If the login is successful, store user information in the session
+        req.session.user = { id: user.id, role: user.role, name: user.name };
+
+        // Redirect to the home page after successful login
+        return res.redirect('/home');
+    });
+};
+
+
 

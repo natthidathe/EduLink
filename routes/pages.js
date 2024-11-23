@@ -22,21 +22,64 @@ router.get('/login', (req, res) => {
     res.render('login');
 });
 
+// router.get('/home', (req, res) => {
+//     res.render('home');
+// });
+
 router.get('/home', (req, res) => {
-    res.render('home');
+    if (!req.session.user) {
+        return res.render('/login'); // Redirect to login if not logged in
+    }
+
+    const { name, role } = req.session.user;
+    res.render('home', { name, role });
 });
 
-router.get('/admin_dashboard', (req, res) => {
-    res.render('admin_dashboard');
+// router.get('/admin_dashboard', (req, res) => {
+//     res.render('admin_dashboard', { title: 'Admin Dashboard' });
+// });
+
+// router.get('/student_dashboard', (req, res) => {
+//     res.render('student_dashboard');
+// });
+
+// router.get('/instructor_dashboard', (req, res) => {
+//     res.render('instructor_dashboard');
+// });
+
+
+// routes/pages.js
+
+router.get('/dashboard', (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+
+    const role = req.session.user.role;
+    switch(role) {
+        case 'admin':
+            return res.render('admin_dashboard', { 
+                layout: 'dashboard',
+                role: role,
+                user: req.session.user 
+            });
+        case 'student':
+            return res.render('student_dashboard', { 
+                layout: 'dashboard',
+                role: role,
+                user: req.session.user 
+            });
+        case 'instructor':
+            return res.render('instructor_dashboard', { 
+                layout: 'dashboard',
+                role: role,
+                user: req.session.user 
+            });
+        default:
+            return res.status(403).send('Unauthorized');
+    }
 });
 
-router.get('/student_dashboard', (req, res) => {
-    res.render('student_dashboard');
-});
-
-router.get('/instructor_dashboard', (req, res) => {
-    res.render('instructor_dashboard');
-});
 
 router.get('/enroll', (req, res) => {
     res.render('enroll');
@@ -58,18 +101,6 @@ router.get('/gradebook', (req, res) => {
     res.render('gradebook');
 });
 
-router.get('/admin_dashboard', function(req, res, next) {
-    db.query('SELECT * FROM user ORDER BY id desc',function(err,rows)     {
-           if(error){
-            req.flash('error', err);
-            res.render('list',{page_title:"Users - Node.js",data:''});
-           }else{
-   
-               res.render('list',{page_title:"Users - Node.js",data:rows});
-           }
-   
-            });
-   
-       });
+
 
 module.exports = router;
