@@ -34,34 +34,8 @@ router.get('/home', (req, res) => {
 });
 
 // Dashboard Routes (role-based rendering)
-router.get('/dashboard', (req, res) => {
-    if (!req.session.user) {
-        return res.redirect('/login');
-    }
-
-    const role = req.session.user.role;
-    switch(role) {
-        case 'admin':
-            return res.render('admin_dashboard', { 
-                layout: 'dashboard',
-                role: role,
-                user: req.session.user 
-            });
-        case 'student':
-            return res.render('student_dashboard', { 
-                layout: 'dashboard',
-                role: role,
-                user: req.session.user 
-            });
-        case 'instructor':
-            return res.render('instructor_dashboard', { 
-                layout: 'dashboard',
-                role: role,
-                user: req.session.user 
-            });
-        default:
-            return res.status(403).send('Unauthorized');
-    }
+router.get('/admin_dashboard', (req, res) => {
+    res.render('admin_dashboard');
 });
 
 // Other Routes

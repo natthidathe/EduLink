@@ -57,6 +57,7 @@ app.use("/auth", require("./routes/auth"));
 app.get("/", (req, res) => res.render("index"));
 app.get("/register", (req, res) => res.render("register"));
 app.get("/login", (req, res) => res.render("login"));
+app.get("/admin_dashboard", (req, res) => res.render("admin_dashboard"));
 app.get("/home", (req, res) => {
     const user = req.session.user; // Assuming user info is stored in the session
     res.render("home", {
@@ -66,30 +67,6 @@ app.get("/home", (req, res) => {
 });
 
 
-// Role-specific dashboard routes
-app.get("/admin-dashboard", (req, res) => {
-  if (req.session.user && req.session.user.role === "admin") {
-    res.send("Welcome to Admin Dashboard");
-  } else {
-    res.status(403).send("Access Denied");
-  }
-});
-
-app.get("/student-dashboard", (req, res) => {
-  if (req.session.user && req.session.user.role === "student") {
-    res.send("Welcome to Student Dashboard");
-  } else {
-    res.status(403).send("Access Denied");
-  }
-});
-
-app.get("/instructor-dashboard", (req, res) => {
-  if (req.session.user && req.session.user.role === "instructor") {
-    res.send("Welcome to Instructor Dashboard");
-  } else {
-    res.status(403).send("Access Denied");
-  }
-});
 
 // Additional pages
 app.get("/enroll", (req, res) => res.render("enroll"));
