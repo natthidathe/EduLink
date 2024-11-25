@@ -8,8 +8,8 @@ const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'root',
-    database: 'edulink'
-});
+    database: 'lms'
+  });
 
 exports.register = (req, res) =>{
     console.log(req.body);
@@ -61,12 +61,13 @@ exports.login = (req, res) => {
         console.log("Query Results:", results);
 
         if (results.length === 0) {
-            return res.render("login", { error: "Invalid email or password" });
+            return res.render("login", { 
+                message: "Invalid email or password" });
         }
 
         const user = results[0]; // Access the first row of the result
         req.session.user = {
-            id: user.UserID, // Match the correct column name
+            id: user.User_ID, // Match the correct column name
             name: user.Name, // Match the correct column name
             role: user.Role  // Match the correct column name
         };

@@ -143,6 +143,21 @@ body {
     min-width: 60%;
 }
 
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 18px;
+    text-align: left;
+}
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+table th {
+    background-color: #f4f4f4;
+}
+
 
 /* Mobile view */
 @media (max-width: 768px) {

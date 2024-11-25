@@ -34,7 +34,7 @@
   <!-- Welcome Section -->
   <div class="flex flex-col justify-center h-5/6">
     <div class="text-2xl justify-center self-center mb-4">
-      Welcome, {{name}}! You’re logged in as a {{role}}.
+      Welcome, {{name}}! You’re logged in as {{role}}.
     </div>
 
     <!-- Dashboard Links -->
@@ -59,8 +59,9 @@
 
           {{#if (eq role 'instructor')}}
           <li>
-            <h3 class="font-bold text-lg self-center">INSTRUCTOR DASHBOARD</h3>
+            
             <a href="/instructor_dashboard">
+            <h3 class="font-bold text-lg self-center">INSTRUCTOR DASHBOARD</h3>
             </a>
           </li>
           {{/if}}

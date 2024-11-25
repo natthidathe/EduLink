@@ -17,11 +17,20 @@
     <link rel="stylesheet" href="/style.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <title>EduLink</title>
+    <style>
+      .error {
+        color: red;
+        font-size: 0.9em;
+        padding-top: 0.5rem;
+
+      }
+    </style>
   </head>
-  <body class="h-screen flex justify-center items-center">
-    <nav class="navbar">
+  <nav class="navbar">
     <div class="nav-left">
+        <a href="/">
         <h1 class="title">EduLink</h1>
+        </a>
     </div>
     <div class="nav-right">
         <a href="/login">
@@ -32,20 +41,23 @@
         </a>
     </div>
 </nav>
+  <body class="h-screen flex justify-center items-center">
     <div class="flex-col flex justify-center w-1/3">
       <div class="justify-center flex text-[30px] font-extrabold">
         Create New Account
       </div>
-      <form action="/auth/register" method="POST">
+      <form action="/auth/register" method="POST" id="registrationForm">
         <div class="card-body mt-4 space-y-3">
           <div class="form-group">
             <label for="name" class="form-label ">Name</label>
             <input type="text" placeholder="Enter Your Full Name" class="form-control rounded-xl placeholder:text-slate-300" id="name" name="name" />
+            <span class="error" id="nameError"></span>
           </div>
 
           <div class="form-group">
             <label for="email" class="form-label">Email</label>
             <input type="email" placeholder="@email.com" class="form-control rounded-xl placeholder:text-slate-300" id="email" name="email" />
+            <span class="error" id="emailError"></span>
           </div>
 
           <div class="form-group">
@@ -57,6 +69,7 @@
               id="password"
               name="password"
             />
+            <span class="error" id="passwordError"></span>
           </div>
 
           <div class="form-group">
@@ -68,6 +81,7 @@
               id="passwordConfirm"
               name="passwordConfirm"
             />
+            <span class="error" id="confirmPasswordError"></span>
           </div>
 
           <div class="form-group">
@@ -77,6 +91,7 @@
               <option value="instructor">Instructor</option>
               <option value="admin">Admin</option>
             </select>
+            <span class="error" id="roleError"></span>
           </div>
 
           <div class="form-group form-check">
@@ -95,9 +110,59 @@
         </div>
       </form>
       {{#if message}}
-        <h4 class="" alert alert-danger mt-4>{{message}}</h4>
+        <h4 class="error" alert alert-danger mt-4>{{message}}</h4>
 
       {{/if}}
     </div>
+     <script>
+      document.getElementById('registrationForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        document.querySelectorAll('.error').forEach(error => error.textContent = '');
+
+        let isValid = true;
+
+        const name = document.getElementById('name').value.trim();
+        if (!name) {
+          isValid = false;
+          document.getElementById('nameError').textContent = 'Name is required.';
+        }
+
+        const email = document.getElementById('email').value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email) {
+          isValid = false;
+          document.getElementById('emailError').textContent = 'Email is required.';
+        } else if (!emailRegex.test(email)) {
+          isValid = false;
+          document.getElementById('emailError').textContent = 'Enter a valid email address.';
+        }
+
+        const password = document.getElementById('password').value.trim();
+        if (!password) {
+          isValid = false;
+          document.getElementById('passwordError').textContent = 'Password is required.';
+        } else if (password.length < 6) {
+          isValid = false;
+          document.getElementById('passwordError').textContent = 'Password must be at least 6 characters long.';
+        }
+
+        const confirmPassword = document.getElementById('passwordConfirm').value.trim();
+        if (confirmPassword !== password) {
+          isValid = false;
+          document.getElementById('confirmPasswordError').textContent = 'Passwords do not match.';
+        }
+
+        const role = document.getElementById('role').value;
+        if (!role) {
+          isValid = false;
+          document.getElementById('roleError').textContent = 'Please select a role.';
+        }
+        
+        if (isValid) {
+          this.submit();
+        }
+      });
+    </script>
   </body>
 </html>

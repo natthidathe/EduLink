@@ -1,0 +1,19 @@
+<h2>Edit User</h2>
+<form action="/admin_dashboard/edit_user/{{user.User_ID}}" method="POST">
+    <label for="name">Name:</label>
+    <input type="text" name="name" id="name" value="{{user.Name}}" required>
+
+    <label for="email">Email:</label>
+    <input type="email" name="email" id="email" value="{{user.Email}}" required>
+
+    <label for="password">Password:</label>
+    <input type="password" name="password" id="password" value="{{user.Password}}" required>
+
+    <label for="role">Role:</label>
+    <select name="role" id="role">
+        <option value="admin" {{#if (eq user.Role "admin")}}selected{{/if}}>Admin</option>
+        <option value="student" {{#if (eq user.Role "student")}}selected{{/if}}>Student</option>
+    </select>
+
+    <button type="submit">Update User</button>
+</form>
