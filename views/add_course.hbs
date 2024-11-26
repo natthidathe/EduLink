@@ -11,35 +11,37 @@
     <link rel="stylesheet" href="/style.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <title>EduLink</title>
-
+<style>
+      .error {
+        color: red;
+        font-size: 0.9em;
+        padding-top: 0.5rem;
+      }
+</style>
 <body >
     <div class="flex flex-col items-center pt-10">
-        <h2 class="text-2xl font-extrabold mb-5 text-gray-800">Add New User</h2>
+        <h2 class="text-2xl font-extrabold mb-5 text-gray-800">Add New Course</h2>
         <div class=" rounded-lg p-6 w-full max-w-md">
-            <form action="/admin_dashboard/add_user" method="POST" class="space-y-4">
+            <form action="/admin_dashboard/add_course" method="POST" class="space-y-4">
                 <div>
-                    <label for="Name" class="block text-gray-700 font-medium">Name:</label>
-                    <input type="text" id="Name" name="Name" required
+                    <label for="Course_ID" class="block text-gray-700 font-medium">Course_ID:</label>
+                    <input type="text" id="Course_ID" name="Course_ID" required
                            class="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
                 </div>
                 <div>
-                    <label for="Email" class="block text-gray-700 font-medium">Email:</label>
-                    <input type="email" id="Email" name="Email" required
+                    <label for="Instructor_ID" class="block text-gray-700 font-medium">Instructor_ID:</label>
+                    <input type="text" id="Instructor_ID" name="Instructor_ID" required
                            class="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
                 </div>
                 <div>
-                    <label for="Password" class="block text-gray-700 font-medium">Password:</label>
-                    <input type="password" id="Password" name="Password" required
+                    <label for="Description" class="block text-gray-700 font-medium">Description:</label>
+                    <input type="text" id="Description" name="Description" required
                            class="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
                 </div>
                 <div>
-                    <label for="Role" class="block text-gray-700 font-medium">Role:</label>
-                    <select id="Role" name="Role"
-                            class="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
-                        <option value="Student">Student</option>
-                        <option value="Instructor">Instructor</option>
-                        <option value="Admin">Admin</option>
-                    </select>
+                    <label for="Title" class="block text-gray-700 font-medium">Title:</label>
+                    <input type="text" id="Title" name="Title" required
+                           class="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
                 </div>
                 <button type="submit"
                         class="w-full bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 rounded-lg">

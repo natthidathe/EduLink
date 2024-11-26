@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 var flash = require('express-flash');
+const exphbs = require('express-handlebars');
 
 
 dotenv.config({ path: "./.env" });
@@ -33,6 +34,14 @@ app.use(
     saveUninitialized: false,
   })
 );
+
+
+
+
+// Set up the view engine as Handlebars
+app.set('view engine', 'hbs');
+
+
 
 app.use(flash());
 
@@ -63,8 +72,18 @@ app.get("/login", (req, res) => res.render("login"));
 app.get("/student_dashboard", (req, res) => res.render("student_dashboard"));
 app.get("/admin_dashboard", (req, res) => res.render("admin_dashboard"));
 app.get("/add_user", (req, res) => res.render("add_user"));
-app.get("edit_user/:id", (req, res) => res.render("edit_user/:id"));
-app.get("delete_user/:id", (req, res) => res.render("delete_user/:id"));
+app.get("/add_course", (req, res) => res.render("add_course"));
+app.get("/add_gradebook", (req, res) => res.render("add_gradebook"));
+
+app.get("/edit_user/:id", (req, res) => res.render("edit_user/:id"));
+app.get("/delete_user/:id", (req, res) => res.render("delete_user/:id"));
+
+app.get("/edit_course/:id", (req, res) => res.render("edit_course/:id"));
+app.get("/delete_course/:id", (req, res) => res.render("delete_course/:id"));
+
+app.get("/edit_gradebook/:id", (req, res) => res.render("edit_gradebook/:id"));
+app.get("/delete_gradebook/:id", (req, res) => res.render("delete_gradebook/:id"));
+
 app.get("/instructor_dashboard", (req, res) => res.render("instructor_dashboard"));
 app.get("/home", (req, res) => {
     const user = req.session.user; // Assuming user info is stored in the session
@@ -82,6 +101,7 @@ app.get("/student_gradebook", (req, res) => res.render("student_gradebook"));
 
 const pagesRouter = require('./routes/pages');
 app.use('/admin_dashboard', pagesRouter);  // This ensures routes in pages.js are prefixed with /admin_dashboard
+
 
 
 // Server

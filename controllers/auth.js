@@ -16,7 +16,7 @@ exports.register = (req, res) =>{
 
     const {name,email,password,passwordConfirm,role} = req.body;
 
-    db.query('SELECT email FROM user where email = ?', [email], async(error, results) => {
+    db.query('SELECT Email FROM user where Email = ?', [email], async(error, results) => {
         if(error){
             console.log(error);
         }
@@ -33,7 +33,7 @@ exports.register = (req, res) =>{
         let hashedPassword = await bcrypt.hash(password, 8);
         console.log(hashedPassword);
 
-        db.query('INSERT INTO user SET ?', {name: name, email: email, password: password, role: role}, (error, results) => {
+        db.query('INSERT INTO user SET ?', {Name: name, Email: email, Password: password, Role: role}, (error, results) => {
             if(error){
                 console.log(error);
             } else{
@@ -76,6 +76,9 @@ exports.login = (req, res) => {
         res.redirect("/home");
     });
 };
+
+
+
 
 
 

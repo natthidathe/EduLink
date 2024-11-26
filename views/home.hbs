@@ -42,14 +42,14 @@
       <div class="flex flex-col justify-center items-center h-820">
         <img src="/dashboard.png" alt="Dashboard Image" class="mb-2">
         <ul>
-          {{#if (eq role 'admin')}}
+          {{#if (eq role 'Admin')}}
           <li>
             <a href="/admin_dashboard">
             <h3 class="font-bold text-lg">ADMIN DASHBOARD</h3>
             </a>
           </li>
           {{/if}}
-          {{#if (eq role 'student')}}
+          {{#if (eq role 'Student')}}
           <li>
             <a href="/student_dashboard">
             <h3 class="font-bold text-lg">STUDENT DASHBOARD</h3>
@@ -57,9 +57,8 @@
           </li>
           {{/if}}
 
-          {{#if (eq role 'instructor')}}
+          {{#if (eq role 'Instructor')}}
           <li>
-            
             <a href="/instructor_dashboard">
             <h3 class="font-bold text-lg self-center">INSTRUCTOR DASHBOARD</h3>
             </a>

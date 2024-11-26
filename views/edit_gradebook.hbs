@@ -14,36 +14,28 @@
 </head>
 <body class="">
 <div class="flex flex-col items-center pt-10">
-    <h2 class="text-2xl font-extrabold mb-5">Edit User</h2>
+    <h2 class="text-2xl font-extrabold mb-5">Edit Gradebook</h2>
     <div class="  rounded-lg p-6 w-full max-w-md">
-        <form action="/admin_dashboard/edit_user/{{user.User_ID}}" method="POST" class="space-y-4">
+        <form action="/gradebook/edit_gradebook/{{gradebook.Gradebook_ID}}" method="POST" class="space-y-4">
             <div>
-                <label for="name" class="block text-gray-700 font-medium">Name:</label>
-                <input type="text" id="name" name="name" value="{{user.Name}}" required
+                <label for="Course_ID" class="block text-gray-700 font-medium">Course ID:</label>
+                <input type="text" id="Course_ID" name="Course_ID" value="{{gradebook.Course_ID}}" required
                        class="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
             </div>
             <div>
-                <label for="email" class="block text-gray-700 font-medium">Email:</label>
-                <input type="email" id="email" name="email" value="{{user.Email}}" required
+                <label for="Student_ID" class="block text-gray-700 font-medium">Student ID:</label>
+                <input type="text" id="Student_ID" name="Student_ID" value="{{gradebook.Student_ID}}" required
                        class="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
             </div>
             <div>
-                <label for="password" class="block text-gray-700 font-medium">Password:</label>
-                <input type="password" id="password" name="password" value="{{user.Password}}" required
+                <label for="Final_Grade" class="block text-gray-700 font-medium">Final Grade:</label>
+                <input type="text" id="Final_Grade" name="Final_Grade" value="{{gradebook.Final_Grade}}" required
                        class="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
             </div>
-            <div>
-                <label for="role" class="block text-gray-700 font-medium">Role:</label>
-                <select id="role" name="role"
-                        class="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
-                    <option value="Admin" {{#if (eq user.Role "admin")}}selected{{/if}}>Admin</option>
-                    <option value="Student" {{#if (eq user.Role "student")}}selected{{/if}}>Student</option>
-                    <option value="Instructor" {{#if (eq user.Role "instructor")}}selected{{/if}}>Instructor</option>
-                </select>
-            </div>
+        
             <button type="submit"
                     class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 rounded-lg">
-                Update User
+                Update Grade
             </button>
         </form>
     </div>
