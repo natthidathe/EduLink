@@ -3,6 +3,8 @@
 </style>
 
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +15,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <title>EduLink</title>
 </head>
+
+
+
 <body class="mt-[75px]">
+
     <nav class="navbar">
     <div class="nav-left">
         <h1 class="title">EduLink</h1>
@@ -79,69 +85,120 @@
         <div class="text-sm py-2 px-2 flex flex-col h-1/7 mx-4 bg-[#D9D9D9]/50 shadow-md   ">Add class comment</div>
         <button class="bg-[#CEF0FF] w-1/4 mx-4 mt-10 rounded-full border-1 border-black">ADD CONTENT</button>
     </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Select all the <td> elements that display the date (using the class 'due-date')
+        const dateElements = document.querySelectorAll('.due-date');
+
+        dateElements.forEach(function(td) {
+            // Get the current text content (the date string)
+            const dateText = td.textContent || td.innerText;
+            
+            // Create a new Date object from the text content
+            const date = new Date(dateText);
+
+            // Check if it's a valid date
+            if (!isNaN(date)) {
+                // Format the date in the desired format, e.g., "MM/DD/YYYY"
+                const formattedDate = date.toLocaleDateString();  // Adjust the format if needed
+                
+                // Update the content of the <td> with the formatted date
+                td.textContent = formattedDate;
+            }
+        });
+    });
+</script>
 
     <div class="flex flex-col mt-32 w-1/2 mx-4">
         <div class="mb-2 bg-[#B4E1F0]/50 ">Assignment</div>
-        <table class="table">
-            <thead>
-                <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Title</th>
-                <th scope="col">Description</th>
-                <th scope="col">DueDate</th>
-                <th width="200px">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#if data.length}}
-                {{#each data}}
-                    <tr>
-                    <th scope="row">{{@index}}</th>
-                    <td>{{name}}</td>
-                    <td>{{email}}</td>
-                    <td>
-                        <a class="btn btn-success edit" href="../users/edit/{{id}}">Edit</a>
-                    </td>
-                    </tr>
-                {{/each}}
-                {{else}}
-                <tr>
-                    <td colspan="5">No user</td>
-                </tr>
-                {{/if}}
-            </tbody>
-            </table>
+        <table border="1">
+    <thead>
+        <tr>
+            <th>Assignment ID</th>
+            <th>Course ID</th>
+            <th>Description</th>
+            <th>Title</th>
+            <th>Due Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each assignment}}
+        <tr>
+            <td>{{this.Assignment_ID}}</td>
+            <td>{{this.Course_ID}}</td>
+            <td>{{this.Description}}</td>
+            <td>{{this.Title}}</td>
+            <td class="due-date">{{this.Due_Date}}</td>
+            <td>
+                <!-- Edit Button -->
+                <a href="/instructor_course/edit_assignment/{{this.Assignment_ID}}">
+                    <button class="bg-white rounded-xl w-20" type="button">Edit</button>
+                </a>
+
+                <!-- Delete Button -->
+                <form action="/instructor_course/delete_assignment/{{this.Assignment_ID}}" method="POST" style="display:inline;">
+                    <button class="bg-[rgba(255,135,135,0.51)] mt-2 rounded-xl w-20" type="submit" onclick="return confirm('Are you sure you want to delete this assignment?')">Delete</button>
+                </form>
+
+            </td>
+        </tr>
+        {{else}}
+        <tr>
+            <td colspan="5">No Assignment found.</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<!-- Add Button -->
+<form class="pl-3" action="/add_assignment" method="GET">
+    <button type="submit" class="bg-[#D0EBC5] rounded-xl w-48 px-2]">Add New Assignment</button>
+</form>
 
         <div class="mb-2 bg-[#B4E1F0]/50" > Quiz</div>
-        <table class="table">
+        <!-- Quizzes Table -->
+        <h2 class="text-2xl font-extrabold text-gray-800 mt-10 mb-5">Quizzes</h2>
+        <table border="1">
             <thead>
                 <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Title</th>
-                <th scope="col">TotalPoint</th>
-                <th scope="col">DueDate</th>
-                <th width="200px">Action</th>
+                    <th>Quiz ID</th>
+                    <th>Course ID</th>
+                    <th>Title</th>
+                    <th>Due Date</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                {{#if data.length}}
-                {{#each data}}
+                {{#each quiz}}
                     <tr>
-                    <th scope="row">{{@index}}</th>
-                    <td>{{name}}</td>
-                    <td>{{email}}</td>
-                    <td>
-                        <a class="btn btn-success edit" href="../users/edit/{{id}}">Edit</a>
-                    </td>
+                        <td>{{this.Quiz_ID}}</td>
+                        <td>{{this.Course_ID}}</td>
+                        <td>{{this.Title}}</td>
+                        <td class="due-date">{{this.Due_Date}}</td>
+                        <td>
+                            <!-- Edit Quiz Button -->
+                            <a href="/instructor_course/edit_quiz/{{this.Quiz_ID}}">
+                                <button class="bg-white rounded-xl w-20" type="button">Edit</button>
+                            </a>
+
+                            <!-- Delete Quiz Button -->
+                            <form action="/instructor_course/delete_quiz/{{this.Quiz_ID}}" method="POST" style="display:inline;">
+                                <button class="bg-[rgba(255,135,135,0.51)] rounded-xl w-20" type="submit" onclick="return confirm('Are you sure you want to delete this quiz?')">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {{else}}
+                    <tr>
+                        <td colspan="6">No Quizzes found.</td>
                     </tr>
                 {{/each}}
-                {{else}}
-                <tr>
-                    <td colspan="5">No user</td>
-                </tr>
-                {{/if}}
             </tbody>
-            </table>
+        </table>
+
+        <!-- Add New Quiz Button -->
+        <form action="/add_quiz" method="GET" class="pt-3">
+            <button type="submit" class="bg-[#D0EBC5] rounded-xl w-48 px-2">Add New Quiz</button>
+        </form>
     </div>
     </div>
         

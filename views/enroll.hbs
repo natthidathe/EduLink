@@ -13,6 +13,15 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <title>EduLink</title>
 </head>
+
+<style>
+      .error {
+        color: red;
+        font-size: 0.9em;
+        padding-top: 0.5rem;
+      }
+    </style>
+    
 <body class="mt-[75px]">
     <nav class="navbar">
     <div class="nav-left">
@@ -31,70 +40,10 @@
     </div>
     </nav>
 
-    {{!-- <div class="flex flex-col">
-      <div class="text-xl font-bold mt-24 mb-4 mx-4">REGISTRATION</div>
-      <div class="mx-4">
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Name</th>
-              <th scope="col">Instructor</th>
-              <th width="200px">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {{#if data.length}}
-              {{#each data}}
-                <tr>
-                  <th scope="row">{{@index}}</th>
-                  <td>{{Name}}</td>
-                  <td>{{Instructor}}</td>
-                  <td>
-                    <a class="btn btn-success edit" href="../users/edit/{{id}}">Edit</a>
-                  </td>
-                </tr>
-              {{/each}}
-            {{else}}
-              <tr>
-                <td colspan="4">No user</td>
-              </tr>
-            {{/if}}
-          </tbody>
-        </table>
-      </div>
-      <div class="flex flex-col mx-4 bg-white">
-        <div class="form-group w-1/6 ml-2">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control rounded-xl" id="name" name="name">
-        </div>
-        
-        <div class="form-group w-1/6 mt-2 ml-2">
-                        <label for="studentid" class="form-label">StudentID</label>
-                        <input type="text" class="form-control rounded-xl" id="studentid" name="studentid">
-        </div>
-
-        <div class="form-group w-1/6 mt-2 ml-2">
-                        <label for="courseid" class="form-label">CourseID</label>
-                        <input type="text" class="form-control rounded-xl" id="courseid" name="courseid">
-        </div>
-
-
-        <button class="ml-2 mb-4 mt-4 border-2 bg-[#B4E1F0]/50 border-black w-40">ENROLL</button>
-      </div>
-    </div> --}}
-
 
     <div class="container">
-  <h1>Course Enrollment</h1>
+  <h1 class="pt-2 pl-2 text-xl font-bold">Course Enrollment</h1>
 
-  <!-- Success and Error Messages -->
-  {{#if messages.success}}
-    <p class="alert alert-success">{{messages.success}}</p>
-  {{/if}}
-  {{#if messages.error}}
-    <p class="alert alert-danger">{{messages.error}}</p>
-  {{/if}}
 
   <!-- Enrollment Form -->
   <form action="/enroll" method="POST" class="form">
@@ -102,36 +51,40 @@
     <input type="text" name="course_id" placeholder="Course ID" required>
     <input type="text" name="title" placeholder="Course Title" required>
     <button type="submit">Enroll</button>
+    {{#if message}}
+                            <h4 class="error" alert alert-danger mt-4>{{message}}</h4>
+                {{/if}}
   </form>
 
   <!-- Course List -->
-  <h2>Available Courses</h2>
-  <table class="table">
+  <h2 class="pt-2 pl-2 text-xl font-bold">Courses</h2>
+<table border="1">
     <thead>
-      <tr>
-        <th>#</th>
-        <th>Course ID</th>
-        <th>Course Title</th>
-        <th>Instructor ID</th>
-      </tr>
+        <tr>
+            <th>Course ID</th>
+            <th>Instructor ID</th>
+            <th>Instructor Name</th>
+            <th>Description</th>
+            <th>Title</th>
+        </tr>
     </thead>
     <tbody>
-      {{#if courses.length}}
         {{#each courses}}
         <tr>
-          <td>{{@index}}</td>
-          <td>{{this.course_id}}</td>
-          <td>{{this.title}}</td>
-          <td>{{this.instructor_id}}</td>
+            <td>{{this.Course_ID}}</td>
+            <td>{{this.Instructor_ID}}</td>
+            <td>{{this.Instructor_Name}}</td>
+            <td>{{this.Description}}</td>
+            <td>{{this.Title}}</td>
+            
+        </tr>
+        {{else}}
+        <tr>
+            <td colspan="5">No courses found.</td>
         </tr>
         {{/each}}
-      {{else}}
-        <tr>
-          <td colspan="4">No courses available</td>
-        </tr>
-      {{/if}}
     </tbody>
-  </table>
+</table>
 </div>
 
 </body>

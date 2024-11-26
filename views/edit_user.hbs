@@ -12,6 +12,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <title>EduLink</title>
 </head>
+<style>
+      .error {
+        color: red;
+        font-size: 0.9em;
+        padding-top: 0.5rem;
+      }
+    </style>
 <body class="">
 <div class="flex flex-col items-center pt-10">
     <h2 class="text-2xl font-extrabold mb-5">Edit User</h2>
@@ -45,6 +52,9 @@
                     class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 rounded-lg">
                 Update User
             </button>
+            {{#if message}}
+                            <h4 class="error" alert alert-danger mt-4>{{message}}</h4>
+                {{/if}}
         </form>
     </div>
 </div>

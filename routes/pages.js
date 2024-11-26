@@ -35,18 +35,14 @@ router.get('/home', (req, res) => {
 
 
 
-// Other Routes
-router.get('/enroll', (req, res) => {
-    res.render('enroll');
-});
 
 router.get('/course', (req, res) => {
     res.render('course');
 });
 
-router.get('/instructor_course', (req, res) => {
-    res.render('instructor_course');
-});
+// router.get('/instructor_course', (req, res) => {
+//     res.render('instructor_course');
+// });
 
 router.get('/assignment', (req, res) => {
     res.render('assignment');
@@ -305,7 +301,9 @@ router.post("/admin_dashboard/add_course", (req, res) => {
     db.query(addQuery, [Course_ID, Instructor_ID, Description, Title], (err) => {
         if (err) {
             console.error("Error adding course:", err);
-            return res.status(500).send("Error adding course.");
+            return res.render("add_course", { 
+                message: err });
+
         }
 
         res.redirect("/admin_dashboard"); // Redirect back to the admin dashboard after adding the user
@@ -341,17 +339,36 @@ router.post('/edit_course/:id', (req, res) => {
     const { Title, Description, Instructor_id } = req.body;
     console.log(req.body);
 
-    const updateQuery = "UPDATE course SET Title = ?, Description = ?, Instructor_ID = ? WHERE Course_ID = ?";
-    db.query(updateQuery, [Title, Description, Instructor_id, CourseID], (err) => {
-        if (err) {
-            console.error("Error updating course:", err);
-            return res.status(500).send("Error updating course.");
+    // Query to check if the provided Instructor_ID exists and has the "Instructor" role
+    const validateInstructorQuery = "SELECT * FROM user WHERE User_ID = ? AND Role = 'Instructor'";
+
+    db.query(validateInstructorQuery, [Instructor_id], (validationErr, validationResults) => {
+        if (validationErr) {
+            console.error("Error validating instructor ID:", validationErr);
+            return res.status(500).send("Error validating instructor ID.");
         }
 
-        // After the update, redirect to the dashboard
-        res.redirect('/admin_dashboard');
+        // If no instructor matches the provided ID, return an error
+        if (validationResults.length === 0) {
+            return res.render("add_gradebook", { 
+                message: "Invalid Instructor ID. Please provide a valid Instructor ID." });
+            
+        }
+
+        // Proceed to update the course if the instructor is valid
+        const updateQuery = "UPDATE course SET Title = ?, Description = ?, Instructor_ID = ? WHERE Course_ID = ?";
+        db.query(updateQuery, [Title, Description, Instructor_id, CourseID], (updateErr) => {
+            if (updateErr) {
+                console.error("Error updating course:", updateErr);
+                return res.status(500).send("Error updating course.");
+            }
+
+            // After the update, redirect to the dashboard
+            res.redirect('/admin_dashboard');
+        });
     });
 });
+
 
 //DELETE COURSE
 // Handle the course deletion
@@ -382,7 +399,7 @@ router.post("/gradebook/add_gradebook", (req, res) => {
         if (err) {
             console.error("Error adding user:", err);
             return res.render("add_gradebook", { 
-                message: "Student_ID must belong to a user with the role Student" });
+                message: err });
             
         }
 
@@ -399,9 +416,10 @@ router.get('/gradebook/edit_gradebook/:id', (req, res) => {
     const getGradeQuery = "SELECT * FROM gradebook WHERE Gradebook_ID = ?";
     db.query(getGradeQuery, [GradebookID], (err, results) => {
         if (err) {
+            
             console.error("Error fetching course for edit:", err);
-            return res.status(500).send("Error fetching grade.");
-        }
+            return res.render("edit_gradebook", { 
+                message: err });        }
 
         if (results.length === 0) {
             return res.status(404).send("Grade not found.");
@@ -421,7 +439,8 @@ router.post('/gradebook/edit_gradebook/:id', (req, res) => {
     db.query(updateQuery, [Course_ID, Student_ID, Final_Grade, GradebookID], (err) => {
         if (err) {
             console.error("Error updating grade:", err);
-            return res.status(500).send("Error updating grade.");
+            return res.render("edit_gradebook", { 
+                message: err });        
         }
 
         // After the update, redirect to the dashboard
@@ -449,9 +468,9 @@ router.post('/gradebook/delete_gradebook/:id', (req, res) => {
 
 //PAGE INSTRUCTOR COURSE
 router.get("/instructor_course", (req, res) => {
-    const assignmentQuery = `SELECT * FROM assignment;`;
+    const assignmentQuery = `SELECT Assignment_ID, Course_ID, Description, Title, Due_Date FROM assignment;`;
     const quizQuery = `SELECT * FROM quiz;`;
-    
+    console.log('pepper')
     // Run both queries in parallel
     db.query(assignmentQuery, (assignmentErr, assignmentResults) => {
         if (assignmentErr) {
@@ -464,7 +483,7 @@ router.get("/instructor_course", (req, res) => {
                 console.error("Error fetching quiz:", quizErr);
                 return res.status(500).send("Error fetching quiz data.");
             }
-    
+            console.log(assignmentResults)
             // Render the admin_dashboard with both datasets
             res.render("instructor_course", {
                 assignment: assignmentResults,
@@ -475,6 +494,230 @@ router.get("/instructor_course", (req, res) => {
 });
 
 
+// Route to handle adding a new assignment (POST request)
+router.post('/instructor_course/add_assignment', (req, res) => {
+    const { Course_ID, Title, Description, Due_Date } = req.body;
+
+    // Log the incoming data to make sure it's coming through correctly
+    console.log("Received data:", { Course_ID, Title, Description, Due_Date });
+
+    // SQL query to insert the data into the assignment table
+    const addQuery = "INSERT INTO assignment (Course_ID, Title, Description, Due_Date) VALUES (?, ?, ?, ?)";
+    db.query(addQuery, [Course_ID, Title, Description, Due_Date], (err) => {
+        if (err) {
+            console.error("Error adding assignment:", err);
+            return res.render('add_assignment', {
+                message: err
+            });
+        }
+
+        // After the assignment is added, redirect to the instructor course page
+        res.redirect('/instructor_course');
+    });
+});
+
+
+
+
+
+
+//EDIT ASSIGNMENT
+// GET Route to fetch assignment data for editing
+router.get('/instructor_course/edit_assignment/:id', (req, res) => {
+    const AssignmentID = req.params.id;
+    console.log("Editing assignment with ID:", AssignmentID); // Debug log
+
+    const getAssignmentQuery = "SELECT * FROM assignment WHERE Assignment_ID = ?";
+    db.query(getAssignmentQuery, [AssignmentID], (err, results) => {
+        if (err) {
+            console.error("Error fetching assignment for edit:", err);
+            return res.status(500).send("Error fetching assignment.");
+        }
+
+        if (results.length === 0) {
+            return res.status(404).send("Assignment not found.");
+        }
+
+        res.render('edit_assignment', { assignment: results[0] }); // Render the edit form
+    });
+});
+
+
+// POST Route to handle updating the assignment
+router.post('/instructor_course/edit_assignment/:id', (req, res) => {
+    const AssignmentID = req.params.id;
+    const { Course_ID, Title, Description, Due_Date } = req.body; // Make sure the form sends this data
+    console.log(req.body);
+
+    const updateQuery = "UPDATE assignment SET Course_ID = ?, Title = ?, Description = ?, Due_Date = ? WHERE Assignment_ID = ?";
+    db.query(updateQuery, [Course_ID, Title, Description, Due_Date, AssignmentID], (err) => {
+        if (err) {
+            console.error("Error updating assignment:", err);
+            return res.status(500).send("Error updating assignment.");
+        }
+
+        // After the update, redirect to the assignments list page (or wherever you want)
+        res.redirect('/instructor_course'); 
+    });
+});
+
+
+//DELETE ASSIGNMENT
+// POST Route to handle assignment deletion
+router.post('/instructor_course/delete_assignment/:id', (req, res) => {
+    const AssignmentID = req.params.id;
+
+    const deleteQuery = "DELETE FROM assignment WHERE Assignment_ID = ?";
+    db.query(deleteQuery, [AssignmentID], (err) => {
+        if (err) {
+            console.error("Error deleting assignment:", err);
+            return res.status(500).send("Error deleting assignment.");
+        }
+
+        // After deletion, redirect back to the assignments list page (or wherever you want)
+        res.redirect('/instructor_course'); 
+    });
+});
+
+//add quiz
+// Route to handle adding a new quiz
+router.post('/instructor_course/add_quiz', (req, res) => {
+    const { Course_ID, Title, Due_Date } = req.body;  // Form input values
+
+    const insertQuery = "INSERT INTO quiz (Course_ID, Title, Due_Date) VALUES (?, ?, ?)";
+    db.query(insertQuery, [Course_ID, Title, Due_Date], (err) => {
+        if (err) {
+            console.error("Error adding quiz:", err);
+            return res.render('add_quiz', {
+                message: err
+            });
+        }
+        res.redirect('/instructor_course'); // Redirect back to the instructor course page after adding
+    });
+});
+
+
+//edit quiz
+// Route to edit a quiz
+router.get('/instructor_course/edit_quiz/:id', (req, res) => {
+    const QuizID = req.params.id;
+    
+    const getQuizQuery = "SELECT * FROM quiz WHERE Quiz_ID = ?";
+    db.query(getQuizQuery, [QuizID], (err, results) => {
+        if (err) {
+            console.error("Error fetching quiz for edit:", err);
+            return res.status(500).send("Error fetching quiz.");
+        }
+        
+        if (results.length === 0) {
+            return res.status(404).send("Quiz not found.");
+        }
+
+        // Send the quiz data to the edit form
+        res.render('edit_quiz', { quiz: results[0] });
+    });
+});
+
+// Route to handle updating a quiz (POST request)
+router.post('/instructor_course/edit_quiz/:id', (req, res) => {
+    const QuizID = req.params.id;
+    const { Course_ID, Title, Due_Date } = req.body; // Updated quiz data
+
+    const updateQuery = "UPDATE quiz SET Course_ID = ?, Title = ?, Due_Date = ? WHERE Quiz_ID = ?";
+    db.query(updateQuery, [Course_ID, Title, Due_Date, QuizID], (err) => {
+        if (err) {
+            console.error("Error updating quiz:", err);
+            return res.status(500).send("Error updating quiz.");
+        }
+
+        res.redirect('/instructor_course'); // Redirect back to the instructor course page after update
+    });
+});
+
+
+//delete quiz
+// Route to delete a quiz
+router.post('/instructor_course/delete_quiz/:id', (req, res) => {
+    const QuizID = req.params.id;
+
+    const deleteQuery = "DELETE FROM quiz WHERE Quiz_ID = ?";
+    db.query(deleteQuery, [QuizID], (err) => {
+        if (err) {
+            console.error("Error deleting quiz:", err);
+            return res.status(500).send("Error deleting quiz.");
+        }
+
+        res.redirect('/instructor_course'); // Redirect back to the instructor course page after deletion
+    });
+});
+
 module.exports = router;
 
+
+//PAGE ENROLL COURSE
+router.get("/enroll", (req, res) => {
+    // Assuming 'user' table has 'User_ID' and 'Name' columns
+    const courseQuery = `
+        SELECT 
+            c.Course_ID, 
+            c.Instructor_ID, 
+            c.Description, 
+            c.Title, 
+            u.Name AS Instructor_Name
+        FROM course c
+        JOIN user u ON c.Instructor_ID = u.User_ID;`;
+
+    db.query(courseQuery, (courseErr, courseResults) => {
+        if (courseErr) {
+            console.error("Error fetching courses:", courseErr);
+            return res.status(500).send("Error fetching course data.");
+        }
+
+        // Render the enroll page with course and instructor data
+        res.render("enroll", {
+            courses: courseResults,
+        });
+    });
+});
+
+
+//ENROLL
+router.post("/enroll", (req, res) => {
+    const { student_id, course_id, title } = req.body;
+
+    // First, check if the course with the given ID and title exists
+    const courseCheckQuery = `
+        SELECT Course_ID, Title FROM course 
+        WHERE Course_ID = ? AND Title = ?;
+    `;
+
+    db.query(courseCheckQuery, [course_id, title], (err, courseResults) => {
+        if (err) {
+            console.error("Error checking course:", err);
+            return res.status(500).send("Error checking course.");
+        }
+
+        // If no course matches the provided course_id and title, send an error
+        if (courseResults.length === 0) {
+            return res.status(404).send("Course not found with the given ID and title.");
+        }
+
+        // If course exists, proceed to enroll the student
+        const enrollQuery = `
+            INSERT INTO enrollment (Student_ID, Course_ID) 
+            VALUES (?, ?);
+        `;
+
+        db.query(enrollQuery, [student_id, course_id], (enrollErr, enrollResults) => {
+            if (enrollErr) {
+                console.error("Error enrolling student:", enrollErr);
+                return res.render("enroll", { 
+                    message: enrollErr });
+            }
+
+            // Successfully enrolled
+            res.send("Student successfully enrolled in the course.");
+        });
+    });
+});
 

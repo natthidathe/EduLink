@@ -12,6 +12,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <title>EduLink</title>
 </head>
+<style>
+      .error {
+        color: red;
+        font-size: 0.9em;
+        padding-top: 0.5rem;
+      }
+    </style>
 <body class="">
 <div class="flex flex-col items-center pt-10">
     <h2 class="text-2xl font-extrabold mb-5">Edit Course</h2>
@@ -26,7 +33,7 @@
 
             <div>
                 <label for="Instructor_ID" class="block text-gray-700 font-medium">Instructor ID:</label>
-                <input type="text" id="Instructor_ID" name="Instructor_ID" value="{{course.Course_ID}}" readonly
+                <input type="text" id="Instructor_ID" name="Instructor_ID" value="{{course.Instructor_ID}}" required
                        class="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
             </div>
             
@@ -51,6 +58,9 @@
                     class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 rounded-lg">
                 Update Course
             </button>
+            {{#if message}}
+                            <h4 class="error" alert alert-danger mt-4>{{message}}</h4>
+                {{/if}}
         </form>
     </div>
 </div>

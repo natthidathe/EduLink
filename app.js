@@ -74,6 +74,8 @@ app.get("/admin_dashboard", (req, res) => res.render("admin_dashboard"));
 app.get("/add_user", (req, res) => res.render("add_user"));
 app.get("/add_course", (req, res) => res.render("add_course"));
 app.get("/add_gradebook", (req, res) => res.render("add_gradebook"));
+app.get("/add_quiz", (req, res) => res.render("add_quiz"));
+app.get("/add_assignment", (req, res) => res.render("add_assignment"));
 
 app.get("/edit_user/:id", (req, res) => res.render("edit_user/:id"));
 app.get("/delete_user/:id", (req, res) => res.render("delete_user/:id"));
@@ -83,6 +85,9 @@ app.get("/delete_course/:id", (req, res) => res.render("delete_course/:id"));
 
 app.get("/edit_gradebook/:id", (req, res) => res.render("edit_gradebook/:id"));
 app.get("/delete_gradebook/:id", (req, res) => res.render("delete_gradebook/:id"));
+
+app.get("/edit_assignment/:id", (req, res) => res.render("edit_assignment/:id"));
+app.get("/delete_assignment/:id", (req, res) => res.render("delete_assignment/:id"));
 
 app.get("/instructor_dashboard", (req, res) => res.render("instructor_dashboard"));
 app.get("/home", (req, res) => {
